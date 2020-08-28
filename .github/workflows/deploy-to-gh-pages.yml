@@ -14,8 +14,8 @@ jobs:
         run: |
           npm cache clean --force
           npm install
-          gatsby clean
-          gatsby build --prefix-paths
+          npm run clean
+          npm run build
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
