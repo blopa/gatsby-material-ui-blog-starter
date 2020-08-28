@@ -1,0 +1,26 @@
+{
+    "title": "My Blog",
+    "author": "@blopa",
+    "search_placeholder": "Search...",
+    "home": "Início",
+    "about": "About",
+    "projects": "Projects",
+    "archive": "Archive",
+    "see_more": "See more",
+    "built_with_gatsby": "Built with Gatsby",
+    "blog": "Blog",
+    "blog_posts": "Blog posts",
+    "recent_posts": "Recent posts",
+    "notfound": {
+        "title": "404: Not found",
+        "header": "404 NOT FOUND",
+        "description": "Sorry, this page does not exist."
+    },
+    "seo_keywords": {
+        "developer": "developer",
+        "development": "development",
+        "javascript": "javascript",
+        "es6": "es6",
+        "gatsby": "gatsby"
+    }
+}
