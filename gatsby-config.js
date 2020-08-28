@@ -1,10 +1,18 @@
 const plugins = require('./gatsby-config.plugins');
 
+const defaultLanguage = 'en';
+
 module.exports = {
     siteMetadata: {
-        title: 'Gatsby Material UI Starter',
-        description: 'Kick off your next, great Gatsby project with this Material UI starter.',
-        author: '@blopa',
+        title: 'My Blog',
+        author: 'blopa',
+        summary: 'some summary for myself',
+        defaultLanguage,
+        description: 'Yet another developer personal blog',
+        siteUrl: 'https://my.blog',
+        social: {
+            twitter: 'mytwitteruser',
+        },
     },
     plugins,
 };

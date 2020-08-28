@@ -1,4 +1,4 @@
-# gatsby-material-ui-starter
+# gatsby-material-ui-blog-starter
 
 Based on the work by:
 https://github.com/mui-org/material-ui/tree/master/examples/gatsby
