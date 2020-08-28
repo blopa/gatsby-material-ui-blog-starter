@@ -27,10 +27,10 @@ workbox.core.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-1462187d0e17129379b6.js"
+    "url": "webpack-runtime-c18d389a0bb02224dd10.js"
   },
   {
-    "url": "styles.f10cbab502b0c8da3f72.css"
+    "url": "styles.c94a6a57f6023e39d961.css"
   },
   {
     "url": "styles-89fd2ae28bdf06750a71.js"
@@ -39,21 +39,33 @@ self.__precacheManifest = [
     "url": "framework-b5b229d58c3c710d5429.js"
   },
   {
-    "url": "app-01e960edf7b027efe2ea.js"
+    "url": "app-77c114767a0afd85840d.js"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "5e307b6a08af0269d8fc20b75fe3444a"
+    "revision": "9269347cc8b0af276c869afa6d665d48"
   },
   {
     "url": "component---cache-caches-gatsby-plugin-offline-app-shell-js-0097d26fbd474b34ff9b.js"
+  },
+  {
+    "url": "page-data/offline-plugin-app-shell-fallback/page-data.json",
+    "revision": "e28bff241dfdb0d899a4e84146bd9eba"
+  },
+  {
+    "url": "page-data/sq/d/63159454.json",
+    "revision": "f93778e902784fa42f4195b4affdf535"
+  },
+  {
+    "url": "page-data/app-data.json",
+    "revision": "766597071a4372369162af123dfcff09"
   },
   {
     "url": "polyfill-ca6e03db6566e4f52123.js"
   },
   {
     "url": "manifest.webmanifest",
-    "revision": "27cc4f8d0a85bf9f37be429d7a55e230"
+    "revision": "d582ae2d6df79779c3993124c0d5fdf7"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
@@ -140,12 +152,12 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   lastNavigationRequest = event.request.url
 
   let { pathname } = new URL(event.request.url)
-  pathname = pathname.replace(new RegExp(`^`), ``)
+  pathname = pathname.replace(new RegExp(`^/gatsby-material-ui-blog-starter`), ``)
 
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/app-01e960edf7b027efe2ea.js`))) {
+  if (!resources || !(await caches.match(`/gatsby-material-ui-blog-starter/app-77c114767a0afd85840d.js`))) {
     return await fetch(event.request)
   }
 
@@ -158,7 +170,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
     }
   }
 
-  const offlineShell = `/offline-plugin-app-shell-fallback/index.html`
+  const offlineShell = `/gatsby-material-ui-blog-starter/offline-plugin-app-shell-fallback/index.html`
   const offlineShellWithKey = workbox.precaching.getCacheKeyForURL(offlineShell)
   return await caches.match(offlineShellWithKey)
 })
