@@ -4,7 +4,6 @@ import { darkTheme, lightTheme } from './theme';
 
 const getTheme = (themeName) => themeName === 'dark' ? darkTheme : lightTheme;
 
-// eslint-disable-next-line no-unused-vars
 export const CustomThemeContext = React.createContext(
     {
         currentTheme: 'light',
