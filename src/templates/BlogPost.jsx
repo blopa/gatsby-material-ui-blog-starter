@@ -4,6 +4,7 @@ import { Link, injectIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { siteMetadata } from '../../gatsby-config';
 
 // Components
 import Layout from '../components/Layout';
@@ -11,6 +12,7 @@ import SEO from '../components/SEO';
 
 // Utils
 import { getFormatedDateForLanguage } from '../utils/gatsby-frontend-helpers';
+import CommentForm from '../components/CommentForm';
 
 const useStyles = makeStyles((theme) => ({
     blogTitleText: {
@@ -21,9 +23,11 @@ const useStyles = makeStyles((theme) => ({
 
 const BlogPostTemplate = ({ data, pageContext, location, intl }) => {
     const { markdownRemark } = data;
-    const { title, allowComments, categories, date } = markdownRemark.frontmatter;
+    const { title, allowComments, categories, date, path: postPath } = markdownRemark.frontmatter;
     const { slug, path, locale } = markdownRemark.fields;
     // const { previous, next } = pageContext;
+    const { googleFormData, comments } = pageContext;
+    console.log({ comments });
     const [previous, next] = [false, false]; // TODO
     const classes = useStyles();
 
@@ -73,15 +77,18 @@ const BlogPostTemplate = ({ data, pageContext, location, intl }) => {
                     )}
                 </ul>
             </nav>
-            {/*<div>*/}
-            {/*    {allowComments && (*/}
-            {/*        <Comments*/}
-            {/*            pageCanonicalUrl={path}*/}
-            {/*            pageId={title}*/}
-            {/*            locale={intl.locale}*/}
-            {/*        />*/}
-            {/*    )}*/}
-            {/*</div>*/}
+            <br />
+            <br />
+            <br />
+            <div>
+                {allowComments && (
+                    <CommentForm
+                        googleFormId={siteMetadata.googleFormId}
+                        googleFormData={googleFormData}
+                        postPath={postPath}
+                    />
+                )}
+            </div>
         </Layout>
     );
 };
@@ -124,6 +131,7 @@ export const pageQuery = graphql`
                 locale
             }
             frontmatter {
+                path
                 allowComments
                 title
                 date

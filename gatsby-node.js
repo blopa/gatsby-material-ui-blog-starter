@@ -1,12 +1,43 @@
 const path = require('path');
+const { read, utils } = require('xlsx');
 const { createFilePath } = require('gatsby-source-filesystem');
-const { siteMetadata: { defaultLanguage } } = require('./gatsby-config');
-const { getBlogPostPath, convertToKebabCase } = require('./src/utils/gatsby-node-helpers');
+const {
+    siteMetadata: {
+        defaultLanguage,
+        googleFormId,
+        spreadsheetId,
+        spreadsheetSheetId,
+    },
+} = require('./gatsby-config');
+const {
+    getBlogPostPath,
+    convertToKebabCase,
+    getGoogleFormData,
+    downloadSpreadsheetFile,
+} = require('./src/utils/gatsby-node-helpers');
 
 const ignoredPages = ['/Home/'];
+let googleFormData = {};
+let commentsSpreadsheetData = [];
 
 exports.createPages = async ({ graphql, actions }) => {
     const { createPage } = actions;
+    if (!googleFormData.loadData) {
+        googleFormData = await getGoogleFormData(
+            `https://docs.google.com/forms/d/e/${googleFormId}/viewform?embedded=true`
+        );
+    }
+
+    if (!commentsSpreadsheetData.length) {
+        const result = await downloadSpreadsheetFile(
+            spreadsheetId,
+            spreadsheetSheetId
+        );
+
+        const workbook = read(await result.arrayBuffer(), { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        commentsSpreadsheetData = utils.sheet_to_json(workbook.Sheets[sheetName], { raw: false });
+    }
 
     const blogPost = path.resolve('./src/templates/BlogPost.jsx');
     const result = await graphql(
@@ -29,6 +60,7 @@ exports.createPages = async ({ graphql, actions }) => {
               frontmatter {
                 title
                 show
+                path
               }
             }
           }
@@ -47,6 +79,8 @@ exports.createPages = async ({ graphql, actions }) => {
     posts.forEach((post, index) => {
         const previous = index === posts.length - 1 ? null : posts[index + 1].node;
         const next = index === 0 ? null : posts[index - 1].node;
+        const comments = commentsSpreadsheetData.find((jsonObject) =>
+            jsonObject.post_path === post.node.frontmatter.path);
 
         /*
          * console.log('CREATING POST:', {
@@ -60,6 +94,8 @@ exports.createPages = async ({ graphql, actions }) => {
             path: post.node.fields.path,
             component: blogPost,
             context: {
+                comments,
+                googleFormData,
                 isBlogPost: true,
                 slug: post.node.fields.slug,
                 locale: post.node.fields.locale,

@@ -11,6 +11,9 @@
     "blog": "Blog",
     "blog_posts": "Blog posts",
     "recent_posts": "Recent posts",
+    "email": "Email",
+    "name": "Name",
+    "comment": "Comment",
     "notfound": {
         "title": "404: Not found",
         "header": "404 NOT FOUND",
