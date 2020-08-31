@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { graphql } from 'gatsby';
 import { Link, injectIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import { Divider, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { siteMetadata } from '../../gatsby-config';
 
 // Components
+import CommentForm from '../components/CommentForm';
+import Comments from '../components/Comments';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 
@@ -17,13 +20,20 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '10px',
         fontSize: '1.5rem;',
     },
+    commentForm: {
+        margin: '10px 0 20px',
+    },
+    comments: {
+        margin: '10px 0',
+    },
 }));
 
 const BlogPostTemplate = ({ data, pageContext, location, intl }) => {
     const { markdownRemark } = data;
-    const { title, allowComments, categories, date } = markdownRemark.frontmatter;
+    const { title, allowComments, categories, date, path: postPath } = markdownRemark.frontmatter;
     const { slug, path, locale } = markdownRemark.fields;
     // const { previous, next } = pageContext;
+    const { googleFormData, comments } = pageContext;
     const [previous, next] = [false, false]; // TODO
     const classes = useStyles();
 
@@ -73,15 +83,24 @@ const BlogPostTemplate = ({ data, pageContext, location, intl }) => {
                     )}
                 </ul>
             </nav>
-            {/*<div>*/}
-            {/*    {allowComments && (*/}
-            {/*        <Comments*/}
-            {/*            pageCanonicalUrl={path}*/}
-            {/*            pageId={title}*/}
-            {/*            locale={intl.locale}*/}
-            {/*        />*/}
-            {/*    )}*/}
-            {/*</div>*/}
+            <div>
+                {allowComments && (
+                    <Fragment>
+                        <Divider />
+                        <CommentForm
+                            className={classes.commentForm}
+                            googleFormId={siteMetadata.googleFormId}
+                            googleFormData={googleFormData}
+                            postPath={postPath}
+                        />
+                        <Divider />
+                        <Comments
+                            comments={comments}
+                            className={classes.comments}
+                        />
+                    </Fragment>
+                )}
+            </div>
         </Layout>
     );
 };
@@ -124,6 +143,7 @@ export const pageQuery = graphql`
                 locale
             }
             frontmatter {
+                path
                 allowComments
                 title
                 date

@@ -1,3 +1,5 @@
+const nodeFetch = require('node-fetch');
+
 // Use a little helper function to remove trailing slashes from paths
 exports.removeTrailingSlash = (path) =>
     (path === '/' ? path : path.replace(/\/$/, ''));
@@ -52,4 +54,38 @@ exports.getBlogPostPath = (slug, category) => {
     // const year = pathParts[1];
 
     return `/blog/${category}/${pathWithoutDate}/`;
+};
+
+exports.getGoogleFormData = async (url) => nodeFetch(url, {
+    method: 'GET',
+})
+    .then((response) => {
+        if (!response.ok) {
+            throw Error('Network request failed');
+        }
+
+        return response.text()
+            .then((data) => {
+                let loadData = data.split('FB_PUBLIC_LOAD_DATA_');
+                loadData = loadData[1].split(';');
+                // eslint-disable-next-line no-new-func
+                const getLoadData = new Function(`const result${loadData[0]}; return result`);
+                // let shuffleSeed = data.split('data-shuffle-seed="');
+                // shuffleSeed = shuffleSeed[1].split('"');
+                return {
+                    loadData: getLoadData(),
+                    // shuffleSeed: shuffleSeed[0],
+                };
+            });
+    });
+
+exports.downloadSpreadsheetFile = async (spreadsheetId, sheetId = 0, forceCors = false) => {
+    let url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=xlsx&gid=${sheetId}`;
+    if (forceCors) {
+        url = `https://cors-anywhere.herokuapp.com/${url}`;
+    }
+
+    const response = await nodeFetch(url);
+    // eslint-disable-next-line no-return-await
+    return await response.blob();
 };
