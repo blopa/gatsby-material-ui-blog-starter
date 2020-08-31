@@ -1,23 +1,30 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { graphql } from 'gatsby';
 import { Link, injectIntl } from 'gatsby-plugin-intl';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import { Divider, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { siteMetadata } from '../../gatsby-config';
 
 // Components
+import CommentForm from '../components/CommentForm';
+import Comments from '../components/Comments';
 import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 
 // Utils
 import { getFormatedDateForLanguage } from '../utils/gatsby-frontend-helpers';
-import CommentForm from '../components/CommentForm';
 
 const useStyles = makeStyles((theme) => ({
     blogTitleText: {
         marginTop: '10px',
         fontSize: '1.5rem;',
+    },
+    commentForm: {
+        margin: '10px 0 20px',
+    },
+    comments: {
+        margin: '10px 0',
     },
 }));
 
@@ -27,7 +34,6 @@ const BlogPostTemplate = ({ data, pageContext, location, intl }) => {
     const { slug, path, locale } = markdownRemark.fields;
     // const { previous, next } = pageContext;
     const { googleFormData, comments } = pageContext;
-    console.log({ comments });
     const [previous, next] = [false, false]; // TODO
     const classes = useStyles();
 
@@ -77,16 +83,22 @@ const BlogPostTemplate = ({ data, pageContext, location, intl }) => {
                     )}
                 </ul>
             </nav>
-            <br />
-            <br />
-            <br />
             <div>
                 {allowComments && (
-                    <CommentForm
-                        googleFormId={siteMetadata.googleFormId}
-                        googleFormData={googleFormData}
-                        postPath={postPath}
-                    />
+                    <Fragment>
+                        <Divider />
+                        <CommentForm
+                            className={classes.commentForm}
+                            googleFormId={siteMetadata.googleFormId}
+                            googleFormData={googleFormData}
+                            postPath={postPath}
+                        />
+                        <Divider />
+                        <Comments
+                            comments={comments}
+                            className={classes.comments}
+                        />
+                    </Fragment>
                 )}
             </div>
         </Layout>

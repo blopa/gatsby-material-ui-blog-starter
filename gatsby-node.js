@@ -79,7 +79,7 @@ exports.createPages = async ({ graphql, actions }) => {
     posts.forEach((post, index) => {
         const previous = index === posts.length - 1 ? null : posts[index + 1].node;
         const next = index === 0 ? null : posts[index - 1].node;
-        const comments = commentsSpreadsheetData.find((jsonObject) =>
+        const comments = commentsSpreadsheetData.filter((jsonObject) =>
             jsonObject.post_path === post.node.frontmatter.path);
 
         /*
@@ -94,7 +94,10 @@ exports.createPages = async ({ graphql, actions }) => {
             path: post.node.fields.path,
             component: blogPost,
             context: {
-                comments,
+                comments: comments.map((comment) => ({
+                    email: null,
+                    ...comment,
+                })),
                 googleFormData,
                 isBlogPost: true,
                 slug: post.node.fields.slug,

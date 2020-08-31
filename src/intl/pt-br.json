@@ -14,6 +14,11 @@
     "email": "E-mail",
     "name": "Nome",
     "comment": "Comentário",
+    "comments": "Comentários",
+    "no_comments": "Nenhum comentário.",
+    "post_comment": "Publicar comentário",
+    "post_a_comment": "Publicar um comentário",
+    "on": "em",
     "notfound": {
         "title": "404: Não encontrado",
         "header": "404 NÃO ENCONTRADO",

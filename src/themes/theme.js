@@ -8,6 +8,16 @@ const baseTheme = {
 // A custom theme for this app
 export const darkTheme = createMuiTheme({
     ...baseTheme,
+    overrides: {
+        MuiInputLabel: {
+            root: {
+                '&$focused': {
+                    // Otherwise it's too dark
+                    color: '#FFFFFFB3',
+                },
+            },
+        },
+    },
     palette: {
         type: 'dark',
         primary: {
