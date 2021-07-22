@@ -76,7 +76,7 @@
         "typeface-roboto": "0.0.75",
         "typography": "^0.16.19",
         "typography-theme-wordpress-2016": "^0.16.19",
-        "xlsx": "^0.16.6"
+        "xlsx": "^0.17.0"
     },
     "devDependencies": {
         "babel-preset-gatsby": "^0.5.8",
